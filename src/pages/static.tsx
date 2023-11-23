@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import { GetServerSideProps, GetStaticProps, NextPage } from "next"
 import { ReactNode, useEffect, useState } from "react"
 import { Col, Container, Row } from "reactstrap"
@@ -32,31 +33,34 @@ const Static: NextPage = (props: {
         setClienteSideData(data);
     }
     return (
-        <Container tag="main">
-            <h1 className="my-5">
-                Como funcionam as renderizações do Next.js
-            </h1>
+        <>
+            <Header />
+            <Container tag="main">
+                <h1 className="my-5">
+                    Como funcionam as renderizações do Next.js
+                </h1>
 
-            <Row>
-                <Col>
-                    <h3>
-                        Gerado durante o build:
-                    </h3>
-                    <h2>
-                        {props.staticData?.timestamp.toString()}
-                    </h2>
-                </Col>
+                <Row>
+                    <Col>
+                        <h3>
+                            Gerado durante o build:
+                        </h3>
+                        <h2>
+                            {props.staticData?.timestamp.toString()}
+                        </h2>
+                    </Col>
 
-                <Col>
-                    <h3>
-                        Gerado no cliente:
-                    </h3>
-                    <h2>
-                        {clienteSideData?.timestamp.toString()}
-                    </h2>
-                </Col>
-            </Row>
-        </Container>
+                    <Col>
+                        <h3>
+                            Gerado no cliente:
+                        </h3>
+                        <h2>
+                            {clienteSideData?.timestamp.toString()}
+                        </h2>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     )
 }
 

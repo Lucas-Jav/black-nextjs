@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import { GetServerSideProps, NextPage } from "next"
 import { ReactNode, useEffect, useState } from "react"
 import { Col, Container, Row } from "reactstrap"
@@ -31,31 +32,33 @@ const Dynamic: NextPage = (props: {
         setClienteSideData(data)
     }
     return (
-        <Container tag="main">
-            <h1 className="my-5">
-                Como funcionam as renderizações do Next.js
-            </h1>
+        <>
+            <Container tag="main">
+                <h1 className="my-5">
+                    Como funcionam as renderizações do Next.js
+                </h1>
 
-            <Row>
-                <Col>
-                    <h3>
-                        Gerado no servidor:
-                    </h3>
-                    <h2>
-                        {props.serverSideData?.timestamp.toString()}
-                    </h2>
-                </Col>
+                <Row>
+                    <Col>
+                        <h3>
+                            Gerado no servidor:
+                        </h3>
+                        <h2>
+                            {props.serverSideData?.timestamp.toString()}
+                        </h2>
+                    </Col>
 
-                <Col>
-                    <h3>
-                        Gerado no cliente:
-                    </h3>
-                    <h2>
-                        {clienteSideData?.timestamp.toString()}
-                    </h2>
-                </Col>
-            </Row>
-        </Container>
+                    <Col>
+                        <h3>
+                            Gerado no cliente:
+                        </h3>
+                        <h2>
+                            {clienteSideData?.timestamp.toString()}
+                        </h2>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     )
 }
 
