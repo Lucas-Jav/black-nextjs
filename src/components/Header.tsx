@@ -1,7 +1,9 @@
+import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
-import { Nav, Navbar } from "reactstrap";
+import { Badge, Nav, Navbar } from "reactstrap";
 
 const Header = () => {
+    const {cart} = useCart();
     return (
         <Navbar container="md" color="dark" dark>
             <Link href="/" className="navbar-brand">
@@ -13,6 +15,9 @@ const Header = () => {
                 </Link>
                 <Link href="/cart" className="nav-link">
                     Carrinho
+                    <Badge>
+                        {cart.length}
+                    </Badge>
                 </Link>
             </Nav>
         </Navbar>

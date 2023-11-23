@@ -2,10 +2,11 @@ import Image from "next/image"
 import Link from "next/link"
 import React, { useState } from "react"
 import { Button, Card, CardBody, CardSubtitle } from "reactstrap"
-import { ProductType } from "../services/products"
+import { ProductType, deleteProduct } from "../services/products"
 import SuccessToast from "./SuccessToast"
 import { useCart } from "@/hooks/useCart"
 import { maskMoney } from "@/utils/MasksOutputs"
+import { useRouter } from "next/router"
 
 type ProductCardProps = {
     product: ProductType
@@ -15,11 +16,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [toastIsOpen, setToastIsOpen] = useState(false);
     const { _id, name, img, price } = product;
     const {cart, addProduct, removeProduct} = useCart();
+    const router = useRouter();
+
+    const deleteProductWithId = async (id: any) => {
+        await deleteProduct(id)
+        router.push("/products");
+    }
 
     return (
         <>
             <Card>
-                <Link href={`/products/${_id}`}>
+                <Link href={`/products/${_id}`} style={{paddingTop: 20}}>
                     <Image 
                         className="card-img-top" 
                         src={img} alt={product.name} 
@@ -30,7 +37,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             width: 250,
                             display: "block",
                             marginLeft: 0,
-                            marginTop: 10,
                             margin: "auto"
                             }}/>
                 </Link>
@@ -56,6 +62,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     }}
                     >
                     Adicionar ao Carrinho
+                    </Button>
+                    <Button
+                    color="danger"
+                    className="pb-2 mt-2"
+                    block
+                    onClick={ () => {
+                        deleteProductWithId(_id)
+                    }}
+                    >
+                        EXCLUIR PRODUTO
                     </Button>
 
                 </CardBody>

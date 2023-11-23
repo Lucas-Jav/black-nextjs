@@ -1,5 +1,6 @@
 import { Card, CardBody } from "reactstrap";
 import { useCart } from "../hooks/useCart";
+import { maskMoney } from "@/utils/MasksOutputs";
 
 const CartTotal = () => {
     const { cart } = useCart()
@@ -11,7 +12,7 @@ const CartTotal = () => {
                 Total:
                 </strong>
                 <span>
-                R$ {cart.reduce((total, product) => total + product.price, 0)}
+                {maskMoney(cart.reduce((total, product) => total + product.price, 0))}
                 </span>
             </CardBody>
         </Card>

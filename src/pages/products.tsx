@@ -8,6 +8,8 @@ import { createProduct, fetchProducts, ProductType } from '../services/products'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { maskMoney } from '@/utils/MasksOutputs'
 import { convertPriceStringToNumber } from '@/utils/RemoveMasks'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export const getStaticProps: GetStaticProps = async () => {
     const products = await fetchProducts()
@@ -19,6 +21,7 @@ const Products: NextPage = (props: {
     products?: ProductType[];
 }) => {
     const [modal, setModal] = useState(false);
+    const router = useRouter();
 
     const toggle = () => setModal(!modal);
 
@@ -33,6 +36,7 @@ const Products: NextPage = (props: {
     })
 
     const {control, handleSubmit, watch} = methods;
+    const {img} = watch()
 
 
     const convertToBase64 = async (file: File) => {
@@ -51,7 +55,7 @@ const Products: NextPage = (props: {
 
             reader.readAsDataURL(file);
         });
-      };
+    };
 
     const onSubmit = async (data: {
         name: string;
@@ -62,7 +66,7 @@ const Products: NextPage = (props: {
     }) => {
         const product = await createProduct(data);
         toggle()
-        window.location.reload();
+        router.push("/products");
     }
     return (
         <>
@@ -76,15 +80,23 @@ const Products: NextPage = (props: {
 
             <main>
                 <Container className="mb-5">
-                <h1 className="my-5">
-                    Nossos Produtos
-                </h1>
+                    <div className="my-5"
+                        style={{
+                            display: "flex",
+                            alignContent: "center",
+                            justifyContent: "space-between"
+                        }}>
+                        <h1>
+                            Nossos Produtos
+                        </h1>
+                        <Button style={{width: "max-content", height: "max-content"}}  color="primary" onClick={toggle}>
+                                Criar produto
+                        </Button>
+                    </div>
 
                 {<ProductsList products={props.products!} />}
     
-                    <Button style={{marginLeft: "auto", marginRight: "0", display: "block"}} color="primary" onClick={toggle}>
-                        Criar produto
-                    </Button>
+                    
                     <Modal isOpen={modal} toggle={toggle}>
                         <FormProvider {...methods}>
                             <ModalHeader toggle={toggle}>Criar produto</ModalHeader>
@@ -168,6 +180,20 @@ const Products: NextPage = (props: {
                                         </FormGroup>
                                     )}
                                 />
+                                {img && (
+                                    <Image
+                                        src={img}
+                                        alt={"img"}
+                                        height={200}
+                                        style={{
+                                            objectFit: "cover",
+                                            display: "block",
+                                            margin: "0 auto",
+                                            height: "auto"
+                                        }}
+                                        width={200}
+                                        />
+                                )}
                                 <Controller
                                     name="img"
                                     control={control}

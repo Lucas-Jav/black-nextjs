@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Row, Table } from "reactstrap";
 import { useCart } from "../hooks/useCart";
 import { ProductType } from "../services/products";
+import { maskMoney } from "@/utils/MasksOutputs";
 
 type CartEntry = {
     product: ProductType
@@ -36,9 +37,9 @@ const CartTableRow = (props: {
                     </Col>
                 </Row>
             </td>
-            <td>R$ {props.entry.product.price}</td>
+            <td>{maskMoney(props.entry.product.price)}</td>
             <td>{props.entry.quantity}</td>
-            <td>R$ {(props.entry.product.price * props.entry.quantity)}</td>
+            <td>{maskMoney((props.entry.product.price * props.entry.quantity))}</td>
             <td>
                 <Button
                 color="primary"
