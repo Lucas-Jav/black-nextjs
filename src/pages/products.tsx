@@ -42,7 +42,7 @@ const Products: NextPage = (props: {
     const convertToBase64 = async (file: File) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-        
+            
             reader.onload = function (e) {
                 const base64Content = e.target.result.split(',')[1];
                 resolve(base64Content);
