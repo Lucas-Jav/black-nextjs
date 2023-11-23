@@ -22,7 +22,7 @@ const CartTableRow = (props: {
                 <Row className="align-items-center gap-3">
                     <Col xs={4} md={2} lg={1}>
                         <Image
-                        src={props.entry.product.imageUrl}
+                        src={props.entry.product.img}
                         alt={props.entry.product.name}
                         height={50}
                         width={50}
@@ -51,7 +51,7 @@ const CartTableRow = (props: {
                 <Button
                 color="danger"
                 size="sm"
-                onClick={() => removeProduct(props.entry.product.id)}
+                onClick={() => removeProduct(props.entry.product._id)}
                 >
                 –
                 </Button>
@@ -67,7 +67,7 @@ export default function CartTable() {
 
     useEffect(() => {
         const entriesList = cart.reduce((list, product) => {
-            const entryIndex = list.findIndex(entry => entry.product.id === product.id)
+            const entryIndex = list.findIndex(entry => entry.product._id === product._id)
     
             if (entryIndex === -1) {
                 return [
@@ -84,7 +84,6 @@ export default function CartTable() {
     
         }, [] as CartEntry[])
     
-        entriesList.sort((a, b) => a.product.id - b.product.id)
         setCartEntries(entriesList)
     
     }, [cart])

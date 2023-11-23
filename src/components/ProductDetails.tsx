@@ -6,6 +6,7 @@ import { Button, Col, Row } from "reactstrap";
 import { ProductType } from "../services/products";
 import SuccessToast from "./SuccessToast";
 import { useCart } from "@/hooks/useCart";
+import { maskMoney } from "@/utils/MasksOutputs";
 
 type ProductDetailsProps = {
     product: ProductType;
@@ -20,9 +21,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <Row>
             <Col lg={6}>
                 <Image
-                src={product.imageUrl}
+                src={product.img}
                 alt={product.name}
                 height={500}
+                style={{
+                    objectFit: "cover"
+                }}
                 width={600}
                 />
             </Col>
@@ -30,14 +34,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             <Col lg={6}>
                 <h1>{product.name}</h1>
 
-                <h2 className="text-muted">R$ {product.price}</h2>
+                <h2 className="text-muted">{maskMoney(product.price)}</h2>
 
                 <p className="my-3">
                 <span className="d-block font-weight-bold">Descrição:</span>
                 {product.description}
                 </p>
 
-                <p className="text-muted">Em estoque: {product.inStock}</p>
+                <p className="text-muted">Em estoque: {product.quantity}</p>
 
                 <Button 
                     color="dark" 

@@ -4,7 +4,7 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 type CartContextType = {
     cart: ProductType[];
     addProduct: (product: ProductType) => void;
-    removeProduct: (productId: number) => void;
+    removeProduct: (productId: string) => void;
 }
 
 const CartContext = createContext<CartContextType>({} as CartContextType)
@@ -29,8 +29,8 @@ export const CartContextProvider = (props: {
         setCart(updatedCart);
     }
 
-    const removeProduct = (productId: number) => {
-        const productIndex = cart.findIndex(product => product.id === productId);
+    const removeProduct = (productId: string) => {
+        const productIndex = cart.findIndex(product => product._id === productId);
 
         if (productIndex !== -1) {
             const updatedCart = [...cart];

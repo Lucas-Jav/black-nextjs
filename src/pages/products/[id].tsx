@@ -1,22 +1,26 @@
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
 import { ProductType, fetchProduct, fetchProducts } from "@/services/products";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { ReactNode } from "react";
 import { Container } from "reactstrap";
 
-export const getStaticProps: GetStaticProps = async (context) => {
-    const id = context.params?.id
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const id = context.params?.id;
 
-    if(typeof id === 'string') {
-        const product = await  fetchProduct(id);
+    if (typeof id === 'string') {
+        try {
+            const product = await fetchProduct(id);
 
-        return {
-            props: {
-                product
-            },
-            revalidate: 10
+            return {
+                props: {
+                    product
+                },
+            };
+        } catch (error) {
+            console.error('Error fetching product:', error);
+            throw error;
         }
     }
 
@@ -25,22 +29,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
             destination: '/products',
             permanent: false
         },
-    }
-}
+    };
+};
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const products = await fetchProducts();
-    const paths = products.map((product) => ({
-        params: {
-            id: product.id.toString()
-        }
-    }))
-
-    return {
-        paths,
-        fallback: false
-    }
-}
 
 const Product: NextPage = (props: {
     children?: ReactNode;
@@ -63,4 +54,4 @@ const Product: NextPage = (props: {
     )
 }
 
-export default Product
+export default Product;

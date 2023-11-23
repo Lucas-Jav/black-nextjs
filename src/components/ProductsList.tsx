@@ -13,7 +13,7 @@ const ProductsList: React.FC<ProductListProps> = ({ products }) => {
         <>
             <Row className="g-4">
                 {products.map(product => (
-                <Col md={6} lg={4} xl={3} key={product.id}>
+                <Col md={6} lg={4} xl={3} key={product._id}>
                     <ProductCard
                     product={product}
                     />
