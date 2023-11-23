@@ -7,7 +7,7 @@ const Header = () => {
     return (
         <Navbar container="md" color="dark" dark>
             <Link href="/" className="navbar-brand">
-                Início
+                Bazar da web
             </Link>
             <Nav className="flex-row" navbar>
                 <Link href="/products" className="nav-link me-2">
