@@ -100,7 +100,7 @@ export default function CartTable() {
                 </tr>
             </thead>
             <tbody>
-                    {cartEntries.map(entry => <CartTableRow key={entry.product.id} entry={entry} />)}
+                    {cartEntries.map(entry => <CartTableRow key={entry.product._id} entry={entry} />)}
             </tbody>
         </Table>
     )
