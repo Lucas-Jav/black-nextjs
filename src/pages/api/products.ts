@@ -1,6 +1,7 @@
 import connectDB from "@/db/db";
 import { WithId, Document, InsertOneResult } from "mongodb";
 
+
 export default async function handler(req: { method: string; body: { name: any; price: any; description: any; quantity: any; img: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: WithId<Document>[] | InsertOneResult<Document>): void; new(): any; }; }; }) {
     const { db, client } = await connectDB();
 

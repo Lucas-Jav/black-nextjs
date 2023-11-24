@@ -1,134 +1,105 @@
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
-import { ReactNode, useState } from 'react'
-import { Button, Container, FormFeedback, FormGroup, FormText, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import Header from '../../components/Header'
-import ProductsList from '../../components/ProductsList'
-import { createProduct, fetchProducts, ProductType } from '../../services/products'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { maskMoney } from '@/utils/MasksOutputs'
-import { convertPriceStringToNumber } from '@/utils/RemoveMasks'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
+import { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
+import { ReactNode, useState } from 'react';
+import { Button, Container, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Header from '../../components/Header';
+import ProductsList from '../../components/ProductsList';
+import { createProduct, fetchProducts, ProductType } from '../../services/products';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { maskMoney } from '@/utils/MasksOutputs';
+import { convertPriceStringToNumber } from '@/utils/RemoveMasks';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 
-
-export const getStaticProps: GetStaticProps = async ({params}) => {
-    try {
-        const products = await fetchProducts();
-    
-        if (!products || products.length === 0) {
-            return {
-                redirect: {
-                    destination: '/', 
-                    permanent: false,
-                },
-            };
-        }
-    
-        return {
-            props: {
-                products,
-            },
-            revalidate: 10
-        };
-    } catch (error) {
-        console.error('Error fetching products:', error);
-        return {
-            notFound: true,
-        };
-    }
+interface ProductsProps {
+  products?: ProductType[];
 }
 
-const Products: NextPage = (props: {
-    children?: ReactNode;
-    products?: ProductType[];
-}) => {
-    const [modal, setModal] = useState(false);
-    const router = useRouter();
+const Products: NextPage<ProductsProps> = (props) => {
+  const [modal, setModal] = useState(false);
+  const router = useRouter();
 
-    const toggle = () => setModal(!modal);
+  const toggle = () => setModal(!modal);
 
-    const methods = useForm({
-        defaultValues: {
-            name: "",
-            price: 0,
-            description: "",
-            quantity: 0,
-            img: ""
-        }
-    })
+  const methods = useForm({
+    defaultValues: {
+      name: '',
+      price: 0,
+      description: '',
+      quantity: 0,
+      img: '',
+    },
+  });
 
-    const {control, handleSubmit, watch, reset} = methods;
-    const {img} = watch()
+  const { control, handleSubmit, watch, reset } = methods;
+  const { img } = watch();
 
+  const convertToBase64 = async (file: File) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
 
-    const convertToBase64 = async (file: File) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            
-            reader.onload = function (e) {
-                //@ts-ignore
-                const base64Content = e.target.result.split(',')[1];
-                resolve(base64Content);
-            };
-        
-            reader.onerror = function (error) {
-                reject(error);
-            };
-        
+      reader.onload = function (e) {
+        //@ts-ignore
+        const base64Content = e.target.result.split(',')[1];
+        resolve(base64Content);
+      };
 
-            reader.readAsDataURL(file);
-        });
-    };
+      reader.onerror = function (error) {
+        reject(error);
+      };
 
-    const onSubmit = async (data: {
-        name: string;
-        price: number;
-        description: string;
-        quantity: number;
-        img: string;
-    }) => {
-        const product = await createProduct(data);
-        toggle()
-        router.push("/products");
-        reset({
-            name: "",
-            price: 0,
-            description: "",
-            quantity: 0,
-            img: ""
-        })
-    }
-    return (
-        <>
-            <Head>
-                <title>Nossos Produtos</title>
-                <meta name="description" content="Conheça todos os nossos produtos" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+      reader.readAsDataURL(file);
+    });
+  };
 
-            <Header />
+  const onSubmit = async (data: {
+    name: string;
+    price: number;
+    description: string;
+    quantity: number;
+    img: string;
+  }) => {
+    const product = await createProduct(data);
+    toggle();
+    router.push('/products');
+    reset({
+      name: '',
+      price: 0,
+      description: '',
+      quantity: 0,
+      img: '',
+    });
+  };
 
-            <main>
-                <Container className="mb-5">
-                    <div className="my-5"
-                        style={{
-                            display: "flex",
-                            alignContent: "center",
-                            justifyContent: "space-between"
-                        }}>
-                        <h1>
-                            Nossos Produtos
-                        </h1>
-                        <Button style={{width: "max-content", height: "max-content"}}  color="primary" onClick={toggle}>
-                                Criar produto
-                        </Button>
-                    </div>
+  return (
+    <>
+      <Head>
+        <title>Nossos Produtos</title>
+        <meta name="description" content="Conheça todos os nossos produtos" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-                {<ProductsList products={props.products!} />}
-    
-                    
-                    <Modal isOpen={modal} toggle={toggle}>
+      <Header />
+
+      <main>
+        <Container className="mb-5">
+          <div
+            className="my-5"
+            style={{
+              display: 'flex',
+              alignContent: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <h1>Nossos Produtos</h1>
+            <Button style={{ width: 'max-content', height: 'max-content' }} color="primary" onClick={toggle}>
+              Criar produto
+            </Button>
+          </div>
+
+          <ProductsList products={props.products!} />
+
+          <Modal isOpen={modal} toggle={toggle}>
                         <FormProvider {...methods}>
                             <ModalHeader toggle={toggle}>Criar produto</ModalHeader>
                             <ModalBody>
@@ -260,10 +231,36 @@ const Products: NextPage = (props: {
                         </ModalFooter>
                     </FormProvider>
                     </Modal>
-                </Container>
-            </main>
-        </>
-    )
-}
+        </Container>
+      </main>
+    </>
+  );
+};
+
+export const getServerSideProps: GetServerSideProps<ProductsProps> = async () => {
+  try {
+    const products = await fetchProducts();
+
+    if (!products || products.length === 0) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+
+    return {
+      props: {
+        products,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return {
+      notFound: true,
+    };
+  }
+};
 
 export default Products;
