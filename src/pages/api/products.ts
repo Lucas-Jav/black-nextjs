@@ -1,5 +1,6 @@
 import connectDB from "@/db/db";
 //@ts-ignore
+
 export default async function handler(req, res) {
     const { db, client } = await connectDB();
 
@@ -14,7 +15,7 @@ export default async function handler(req, res) {
             const result = await collection.insertOne({ name, price, description, quantity, img });
             res.status(201).json(result);
         } else {
-            res.status(405).json({ message: 'Método não permitido' });
+            res.status(405)
         }
 
     } catch (error) {
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
 
         const errorMessage = error instanceof Error ? error.message : 'Erro interno do servidor';
         
-        res.status(500).json({ error: errorMessage});
+        res.status(500)
 
     } finally {
         await client.close();

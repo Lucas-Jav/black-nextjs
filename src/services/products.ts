@@ -16,6 +16,7 @@ export const fetchProducts = async () => {
         }
 
         const products: ProductType[] = await response.json();
+        console.log('Products:', products);
         return products;
     } catch (error) {
         console.error('Error fetching products:', error);
