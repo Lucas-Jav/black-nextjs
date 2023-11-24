@@ -1,5 +1,5 @@
 import connectDB from "@/db/db";
-
+//@ts-ignore
 export default async function handler(req, res) {
     const { db, client } = await connectDB();
 

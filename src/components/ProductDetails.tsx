@@ -48,6 +48,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             const reader = new FileReader();
         
             reader.onload = function (e) {
+                //@ts-ignore
                 const base64Content = e.target.result.split(',')[1];
                 resolve(base64Content);
             };
@@ -245,6 +246,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                                         name="file"
                                         type="file"
                                         onChange={async (e) => {
+                                            //@ts-ignore
                                             const file = e.target.files[0];
                                             if (file) {
                                                 const base64Content = await convertToBase64(file);

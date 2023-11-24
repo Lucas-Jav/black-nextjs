@@ -10,7 +10,7 @@ import { maskMoney } from '@/utils/MasksOutputs'
 import { convertPriceStringToNumber } from '@/utils/RemoveMasks'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-
+//@ts-ignore
 export const getStaticProps: GetStaticProps = async () => {
     const products = await fetchProducts()
     return { props: { products } }
@@ -44,6 +44,7 @@ const Products: NextPage = (props: {
             const reader = new FileReader();
             
             reader.onload = function (e) {
+                //@ts-ignore
                 const base64Content = e.target.result.split(',')[1];
                 resolve(base64Content);
             };
@@ -214,6 +215,7 @@ const Products: NextPage = (props: {
                                                 name="file"
                                                 type="file"
                                                 onChange={async (e) => {
+                                                    //@ts-ignore
                                                     const file = e.target.files[0];
                                                     if (file) {
                                                         const base64Content = await convertToBase64(file);

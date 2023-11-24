@@ -3,7 +3,7 @@ import { MongoClient, MongoClientOptions } from "mongodb"
 
 const url = "mongodb://127.0.0.1:27017"
 const urlServer = "mongodb+srv://jotaalexandrejas:NskwzslMLyz2NjXd@next.np4dibk.mongodb.net/?retryWrites=true&w=majority"
-
+//@ts-ignore
 export default async function handler(req, res) {
     const {client} = await connectDB()
 
