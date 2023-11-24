@@ -1,0 +1,5 @@
+{
+    "routes": [
+        { "src": "/api/(.*)", "dest": "https://black-nextjs-khaki.vercel.app/api/$1" }
+    ]
+}
