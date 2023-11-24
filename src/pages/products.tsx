@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 //@ts-ignore
 export const getStaticProps: GetStaticProps = async () => {
-    const products = await fetchProducts()
+    const products = await fetchProducts();
     return { props: { products } }
 }
 
