@@ -1,0 +1,6 @@
+{
+    "ignore-build-errors": [
+        "/api/products",
+        "/products"
+    ]
+}
