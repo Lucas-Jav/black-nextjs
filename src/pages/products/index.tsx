@@ -2,16 +2,17 @@ import { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { ReactNode, useState } from 'react'
 import { Button, Container, FormFeedback, FormGroup, FormText, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import Header from '../components/Header'
-import ProductsList from '../components/ProductsList'
-import { createProduct, fetchProducts, ProductType } from '../services/products'
+import Header from '../../components/Header'
+import ProductsList from '../../components/ProductsList'
+import { createProduct, fetchProducts, ProductType } from '../../services/products'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { maskMoney } from '@/utils/MasksOutputs'
 import { convertPriceStringToNumber } from '@/utils/RemoveMasks'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+
 //@ts-ignore
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({params}) => {
     const products = await fetchProducts();
     return { props: { products } }
 }
