@@ -1,8 +1,17 @@
 import connectDB from "@/db/db";
 import { WithId, Document, InsertOneResult } from "mongodb";
 
+import Cors from "cors";
+import initMiddleware from "@/utils/initmidleware";
+
+const cors = initMiddleware(
+    Cors({
+        methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PATCH'],
+    })
+);
 
 export default async function handler(req: { method: string; body: { name: any; price: any; description: any; quantity: any; img: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: WithId<Document>[] | InsertOneResult<Document>): void; new(): any; }; }; }) {
+    await cors(req, res);
     const { db, client } = await connectDB();
 
     try {

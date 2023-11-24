@@ -8,6 +8,7 @@ export interface ProductType {
     img: string;
 }
 
+
 export const fetchProducts = async () => {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_APIURL}/api/products`);

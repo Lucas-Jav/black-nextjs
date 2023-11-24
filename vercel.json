@@ -1,5 +1,9 @@
 {
     "routes": [
-        { "src": "/(.*)" }
+        {
+            "src": "/api/(.*)",
+            "dest": "https://black-nextjs-2pe79gigu-lucas-jav.vercel.app/api/$1",
+            "methods": ["GET", "POST", "OPTIONS", "DELETE", "PATCH"]
+        }
     ]
 }
