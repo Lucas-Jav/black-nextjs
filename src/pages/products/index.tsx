@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { ReactNode, useState } from 'react'
 import { Button, Container, FormFeedback, FormGroup, FormText, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
@@ -11,10 +11,31 @@ import { convertPriceStringToNumber } from '@/utils/RemoveMasks'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 
-//@ts-ignore
-export async function getStaticProps({params}) {
-    const products = await fetchProducts();
-    return { props: { products } }
+
+export const getStaticProps: GetStaticProps = async ({params}) => {
+    try {
+        const products = await fetchProducts();
+    
+        if (!products || products.length === 0) {
+            return {
+                redirect: {
+                    destination: '/', 
+                    permanent: false,
+                },
+            };
+        }
+    
+        return {
+            props: {
+                products,
+            },
+        };
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return {
+            notFound: true,
+        };
+    }
 }
 
 const Products: NextPage = (props: {

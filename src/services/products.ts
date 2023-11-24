@@ -10,8 +10,12 @@ export interface ProductType {
 
 export const fetchProducts = async () => {
     try {
-        const products: ProductType[] = await fetch(`${process.env.NEXT_PUBLIC_APIURL}/api/products`).then(res => res.json())
-        console.log('Products:');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APIURL}/api/products`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const products: ProductType[] = await response.json();
         return products;
     } catch (error) {
         console.error('Error fetching products:', error);

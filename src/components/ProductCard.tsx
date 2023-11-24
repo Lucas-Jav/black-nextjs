@@ -38,7 +38,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             display: "block",
                             marginLeft: 0,
                             margin: "auto"
-                            }}/>
+                            }}
+                            loading="lazy"/>
                 </Link>
                 <CardBody>
                     <Link href={`/products/${_id}`}>
