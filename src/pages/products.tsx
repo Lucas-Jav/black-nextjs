@@ -35,7 +35,7 @@ const Products: NextPage = (props: {
         }
     })
 
-    const {control, handleSubmit, watch} = methods;
+    const {control, handleSubmit, watch, reset} = methods;
     const {img} = watch()
 
 
@@ -67,6 +67,13 @@ const Products: NextPage = (props: {
         const product = await createProduct(data);
         toggle()
         router.push("/products");
+        reset({
+            name: "",
+            price: 0,
+            description: "",
+            quantity: 0,
+            img: ""
+        })
     }
     return (
         <>
