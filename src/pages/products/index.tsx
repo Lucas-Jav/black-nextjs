@@ -29,6 +29,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
             props: {
                 products,
             },
+            revalidate: 10
         };
     } catch (error) {
         console.error('Error fetching products:', error);
