@@ -14,7 +14,7 @@ import Image from 'next/image'
 //@ts-ignore
 export const getStaticProps: GetStaticProps = async ({params}) => {
     const products = await fetchProducts();
-    return { props: { products } }
+    return { props: { products }, revalidate: 10 }
 }
 
 const Products: NextPage = (props: {
